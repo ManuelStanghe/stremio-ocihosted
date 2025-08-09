@@ -34,6 +34,14 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+  mfp:
+    build: https://github.com/nzo66/mediaflow-proxy.git
+    container_name: mfp
+    env_file:
+      - ./mfp2/.env
+    restart: unless-stopped
+    networks:
+      - proxy
   mammamia:
     build: ./mammamia
     container_name: mammamia
