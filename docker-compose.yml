@@ -61,8 +61,6 @@ services:
       - ./streamv/.env
     restart: unless-stopped
     command: pnpm start
-    ports:
-      - '7860:7860'
     networks:
       - proxy
   aiostreams:
