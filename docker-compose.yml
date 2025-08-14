@@ -34,6 +34,13 @@ services:
     command: pnpm start
     networks:
       - proxy
+webstreamr:
+    build: https://github.com/webstreamr/webstreamr.git#main
+    container_name: webstreamr
+    restart: unless-stopped
+    networks:
+      - proxy
+
 volumes:
   npm-data:
   npm-letsencrypt:
