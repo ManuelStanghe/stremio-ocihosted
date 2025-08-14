@@ -1,16 +1,6 @@
 version: '3.8'
 
 services:
-  duckdns-updater:
-    image: linuxserver/duckdns
-    container_name: duckdns-updater
-    restart: unless-stopped
-    env_file:
-      - ./duckdns-updater/.env
-    volumes:
-      - duckdns-data:/config
-    networks:
-      - proxy
   mediaflow_proxy:
     build: https://github.com/mhdzumair/mediaflow-proxy.git
     container_name: mediaflow_proxy
