@@ -38,6 +38,8 @@ services:
     build: https://github.com/webstreamr/webstreamr.git#main
     container_name: webstreamr
     restart: unless-stopped
+    ports:
+      - "51546:51546"
     networks:
       - proxy
 
