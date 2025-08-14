@@ -34,14 +34,6 @@ services:
     command: pnpm start
     networks:
       - proxy
-  webstreamr:
-    build: ./webstreamr
-    container_name: webstreamr
-    restart: unless-stopped
-    ports:
-      - "51546:51546"
-    networks:
-      - proxy
 
 volumes:
   npm-data:
