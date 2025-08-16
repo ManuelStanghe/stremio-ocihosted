@@ -26,7 +26,7 @@ services:
     networks:
       - proxy
   streamv:
-    build: https://github.com/qwertyuiop8899/StreamViX_MFP.git#main
+    build: https://github.com/qwertyuiop8899/StreamViX.git#main
     container_name: streamv
     env_file:
       - ./streamv/.env
