@@ -1,19 +1,11 @@
 version: '3.8'
 
 services:
-  mediaflow_proxy:
-    build: https://github.com/mhdzumair/mediaflow-proxy.git
-    container_name: mediaflow_proxy
-    env_file:
-      - ./mfp/.env
-    restart: unless-stopped
-    networks:
-      - proxy
   mfp:
     build: https://github.com/nzo66/mediaflow-proxy.git
     container_name: mfp
     env_file:
-      - ./mfp2/.env
+      - ./mfp/.env
     restart: unless-stopped
     networks:
       - proxy
