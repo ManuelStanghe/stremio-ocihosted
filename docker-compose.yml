@@ -1,6 +1,16 @@
 version: '3.8'
 
 services:
+  easyproxy:
+    build: https://github.com/nzo66/EasyProxy.git
+    container_name: easyproxy
+    env_file:
+      - ./easyproxy/.env
+    ports:
+      - "7860:7860"
+    restart: unless-stopped
+    networks:
+      - proxy
   mfp:
     build: https://github.com/nzo66/mediaflow-proxy.git
     container_name: mfp
