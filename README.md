@@ -63,7 +63,7 @@ cd <nome-repo>
 | Servizio           | Nome Servizio Docker | Porta interna | Descrizione                              |
 |--------------------|----------------------|---------------|------------------------------------------|
 | **[MediaFlow Proxy (NZO66)](https://github.com/nzo66/mediaflow-proxy)**|mfp | 8888(*)   | Proxy per streaming video                | |
-| **[MediaFlow Proxy (NZO66)](https://github.com/nzo66/EasyProxy)**|easyproxy | 7860(*)   | Proxy per streaming video                | |
+| **[Easyproxy](https://github.com/nzo66/EasyProxy)**|easyproxy | 7860(*)   | Proxy per streaming video                | |
 | **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)**|npm | 80/443/8080 | Reverse proxy + certificati Let's Encrypt |
 | **[docker-duckdns](https://github.com/linuxserver/docker-duckdns)** |duckdns-updater |—         | Aggiorna il DNS dinamicamente            |
 
