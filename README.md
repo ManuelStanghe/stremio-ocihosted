@@ -1,90 +1,24 @@
 # stremio-ocihosted  
-**Stremio Stack con Mammamia, MediaFlow Proxy e altro ancora**
+**Stack con Easyproxy e MediaFlow Proxy(NZO66)**
 
-Questo repository contiene istruzioni, configurazioni e suggerimenti per il self-hosting **Oracle Cloud Free Tier** di un'intera istanza privata di Stremio, con plugin **Mammamia**, **MediaFlow Proxy**, **StreamV**, **AIOStreams** e altri componenti opzionali.
+Questo repository contiene istruzioni, configurazioni e suggerimenti per il self-hosting **Oracle Cloud Free Tier** di un'intera istanza privata di Stremio, con plugin **Mammamia**, **MediaFlow Proxy(NZO66)** e altri componenti opzionali.
 
 ---
 
-## 📢 Disclaimer (con un piccolo rant) 
+## 📢 Disclaimer
 
 > Questo progetto è a scopo puramente educativo.  
 > L'utilizzo improprio di componenti che accedono a contenuti protetti da copyright potrebbe violare le leggi del tuo paese.  
 > **Usa questi strumenti solo per contenuti legalmente ottenuti.**  
 > L’autore non si assume responsabilità per eventuali usi illeciti.
 
-> ### 📣 Un pensiero personale:
-> Se stai usando Stremio con mille plugin e Real-Debrid, sappilo: non sei un pirata.
-> 
->  **News flash: non sei un pirata, sei un leacher da salotto con le crocs ai piedi.**
-> 
-> Il pirata vero seedava, uploada, si faceva il port forwarding da solo e sniffava i peer con Wireshark. Tu clicchi e guardi. Comodo, eh? Ma zero gloria.
-> Stai "guardando gratis" sì, ma stai succhiando banda da server altrui senza restituire niente.
+---
 
-> **Non dai nulla, non condividi nulla.**  
-
-> **Zero upload, zero sharing, zero rispetto per chi ci mette storage, tempo e skill.**
-> La tua banda in upload è più vuota della cartella “Download” su eMule nel 2025.
-> 
-> 💰 E poi ci sono quelli che bypassano la pubblicità sui siti di streaming…
-> Ma lo sai che quei 2 banner schifosi sono l’unica cosa che tiene in piedi quei siti?
-> Se li togli pure quelli, poi piangi perché non trovi più il film russo del 2003 sottotitolato in polacco.
-
-> 💀 Se sei uno che si è mai lamentato per la qualità di uno stream pirata...ti meriti il buffering perpetuo.
-
-> Se proprio vuoi vivere ai margini del sistema, almeno fallo con un po’ di dignità.
-> Usa i torrent. Condividi. Seeda. Rompiti la testa sui port forwarding.
-> E soprattutto: non fare il figo con gli script di qualcun altro.
-
-> “Steal with style. Share like it’s 2006. Respect the swarm.”
+## 🎁 Oracle Cloud con istanza Ampere A1 (ARM) su piano **"Pay As You Go"**
 
 ---
 
-## 🎁 Vantaggi del Free Tier di Oracle Cloud
-
-Oracle Cloud offre un piano gratuito **senza scadenza** con una serie di servizi utilizzabili a costo zero. I principali vantaggi includono:
-
-- ✅ **fino a 2 istanze Ampere A1 (ARM)** fino a 4 OCPU e 24 GB RAM **totali**
-- ✅ **2 istanza AMD (x86)** VM.Standard.E2.1.Micro
-- ✅ **200 GB totale di storage block** da da utilizzare per le Compute Istances
-- ✅ **10 GB di Object Storage**
-- ✅ **Rete virtuale (VCN) gratuita** con indirizzo IP pubblico
-- ✅ **Accesso a strumenti avanzati** come Load Balancer, Monitoring, CLI, SDK, e Terraform
-- ✅ **Zero costi permanenti**, finché resti nel Free Tier
-- ✅ **Prestazioni elevate**, paragonabili a servizi cloud a pagamento
-
-⚠️ **Importante**: nessun addebito viene effettuato a meno che non si passi manualmente al piano **"Pay As You Go"**.
-
----
-
-## ✅ Requisiti  
-
-Hai deciso di configurare una tua istanza privata di Mammamia e Media Flow Proxy, senza spendere un centesimo? Ecco cosa ti serve:
-
-### 🔐 Account Oracle Cloud
-- Vai su [Oracle Cloud Free Tier](https://www.oracle.com/cloud/free/)
-- Completa la registrazione inserendo i tuoi dati personali
-- Inserisci una carta di credito per la verifica (**non verranno effettuati addebiti** se resti nel Free Tier)
-
-### 🖥️ Shape istanze e sistema operativo
-- Puoi creare **una istanza AMD** (architettura x86), che per questo progetto è adeguata.
-- In alternativa puoi creare fino a **2 istanze ARM (Ampere A1)** con massimo **4 OCPU e 24 GB RAM totali**, ottime per progetti più intensivi o specializzati.
-  > ℹ️ **Nota**: Le istanze ARM sono spesso **non disponibili** nella regione `Italy-Milan`, quindi si consiglia di usare l'istanza AMD per iniziare e riservare l'uso delle istanze ARM a progetti specifici o regioni con disponibilità (es. `Germany-Frankfurt`, `US-Ashburn`).
-- Sistema Operativo Ubuntu Server Minimal 22.04.  
-  > *(Le istruzioni sono per Ubuntu, ma facilmente adattabili ad altre distro.)*
-
-### 🌍 Accesso remoto con IP dinamico + Modifica regole Firewall su Oracle Cloud Platform
-> ℹ️ In realtà Oracle Cloud Platform nel piano Free Tier permette di avere fino a 2 indirizzi ip pubblici riservati da assegnare alle istanze dopo la creazione. Ovviamente questi IP essendo riservati e assegnati staticamente alle vostre istanze non cambieranno mai nel corso del tempo. Il mio consiglio è di utilizzare questi ip per progetti più importanti... tanto la soluzione c'è
-
-Poiché poichè l'ip assegnato alle istanze create su OCP è dinamico, è necessario un sistema per mantenere accessibile il tuo server anche quando l’IP cambia.
-- Un **IP pubblico** (va bene anche se dinamico).
-- Un account gratuito su [**duckdns.org**](https://www.duckdns.org) per creare **hostname statici** che puntano sempre al tuo NAS.
-- Normalmente l'accesso alle istanze OCP è permesso solo sulla porta 22 (SSH) è necessario aprire l'accesso anche le porte:
-  - Porta **80** (HTTP) 
-  - Porta **443** (HTTPS)
-  - Porta **8080** (Admin Panel di Nginx Proxy Manager)
-
-> 🔁 Questo setup è fondamentale per permettere a Nginx Proxy Manager di ottenere e rinnovare automaticamente i certificati SSL tramite Let’s Encrypt.
-
+### 🌍 Accesso remoto con IP dinamico (DuckDns + Nginx Proxy Manager per certificati SSL tramite Let’s Encrypt)
 
 ### 🔐 Creazione degli hostname su DuckDns
 
@@ -100,10 +34,8 @@ Puoi ovviamente scegliere qualsiasi nome, purché sia disponibile e facile da ri
 >ℹ️ Poiché **DuckDNS gestisce wildcard per ogni sottodominio**, non appena creiamo uno hostname come **stremio-mario.duckdns.org** possiamo—utilizzando Nginx e generando un certificato valido per *.stremio-mario.duckdns.org—ospitare sulla nostra macchina più servizi sotto domini diversi. 
 
 #### Esempi di hostname che andremo a creare su Nginx:
-- `mammamia.stremio-mario.duckdns.org`
 - `mfp.stremio-mario.duckdns.org`
-- `streamv.stremio-mario.duckdns.org`
-- `aiostreams.stremio-mario.duckdns.org`
+- `easyproxy.stremio-mario.duckdns.org`
 
 Questi hostname punteranno sempre al tuo NAS anche se il tuo IP cambia.  
 Il tutto è possibile installando un piccolo agente (Dynamic DNS client) che aggiorna automaticamente il record DNS.
@@ -130,12 +62,10 @@ cd <nome-repo>
 
 | Servizio           | Nome Servizio Docker | Porta interna | Descrizione                              |
 |--------------------|----------------------|---------------|------------------------------------------|
-| **[Mammamia](https://github.com/UrloMythus/MammaMia)**|mammamia       | 8080(*)          | Plugin personalizzato per Stremio        |
-| **[MediaFlow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)**|mediaflow_proxy | 8888(*)   | Proxy per streaming video                |
-| **[StreamV](https://github.com/qwertyuiop8899/StreamV)**|steamv        | 7860(*)          | Web player personalizzato (opzionale)    |
+| **[MediaFlow Proxy (NZO66)](https://github.com/nzo66/mediaflow-proxy)**|mfp | 8888(*)   | Proxy per streaming video                | |
+| **[MediaFlow Proxy (NZO66)](https://github.com/nzo66/EasyProxy)**|easyproxy | 7860(*)   | Proxy per streaming video                | |
 | **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)**|npm | 80/443/8080 | Reverse proxy + certificati Let's Encrypt |
 | **[docker-duckdns](https://github.com/linuxserver/docker-duckdns)** |duckdns-updater |—         | Aggiorna il DNS dinamicamente            |
-| **[AIOStreams](https://github.com/Viren070/AIOStreams)** |aiostreams |3000(*)        | multipli Stremio addons e servizi debrid in un solo plugin|
 
 >ℹ️ (*)Le **porte elencate (tranne quelle di Nginx Proxy Manager)** sono **interne alla rete Docker** e **non sono esposte direttamente** sulla macchina host.
 Questo significa che i servizi **non sono accessibili dall’esterno se non tramite Nginx Proxy Manager**, che funge da gateway sicuro con supporto a **HTTPS e Let's Encrypt**.
@@ -346,22 +276,11 @@ docker network create proxy
 ```
 >🔁 Questo comando va eseguito una sola volta. Se la rete esiste già, Docker mostrerà un errore che puoi ignorare in sicurezza.
 
-### 🛠️ Creazione dei file .env per MammaMia, MediaFlow Proxy, StreamV, AIOStreams e docker-duckdns
+### 🛠️ Creazione del file .env per MediaFlow Proxy(NZO66) e docker-duckdns
 In ogni sotto cartella di questo progetto è presente un file .env_example con tutte le chiavi necessarie per il corretto funzionamento dei vari moduli.
 Per ogni modulo copiare e rinominare il file .env_example in .env. I vari .env dovranno essere modificati in base alle vostre specifiche configurazioni.
 
-**1. .env per MammaMia**
-Per configurare il plugin MammaMia è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
-
-📄 Esempio: ./mammamia/.env
-```text
-# File .env per il plugin mammamia
-TMDB_KEY=xxxxxxxxxxxxxxxx
-PROXY=["http://xxxxxxx-rotate:xxxxxxxxx@p.webshare.io:80"]
-FORWARDPROXY=http://xxxxxxx-rotate:xxxxxxxx@p.webshare.io:80/
-```
-
-**2. .env per MediaFlow Proxy**
+**1. .env per MediaFlow Proxy(NZO66)**
 Per configurare il modulo Media Flow Proxy è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
 
 📄 Esempio: ./mfp/.env
@@ -369,31 +288,7 @@ Per configurare il modulo Media Flow Proxy è necessario configurare il relativo
 API_PASSWORD=password
 TRANSPORT_ROUTES={"all://*.ichigotv.net": {"verify_ssl": false}, "all://ichigotv.net": {"verify_ssl": false}}
 ```
-
-**3. .env per StreamV**
-Per configurare il plugin StreamV è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
-
-📄 Esempio: ./streamv/.env
-```text
-TMDB_API_KEY="xxxxxxxxxxxxxxxx"
-MFP_PSW="xxxxxxxxx"
-MFP_URL="https://mfp.stremio-mario.duckdns.org"
-BOTHLINK=true
-```
-
-**4. .env per AIOStreams**
-Per configurare il plugin AIOStreams è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
-
-📄 Esempio: ./AIOStreams/.env
-```text
-#queste sono le impostazioni minime per il corretto funzionamento del plugin
-ADDON_ID="aiostreams.stremio-mario.duckdns.org"
-BASE_URL=https://aiostreams.stremio-mario.duckdns.org
-SECRET_KEY=36148382b90f80430d69075df9848eee87032d16fc4c03fe9ca7ce53b7028973  (può essere generata con openssl rand -hex 32)
-ADDON_PASSWORD=password_a_scelta
-```
-
-**5. .env per DuckDNS Updater**
+**2. .env per DuckDNS Updater**
 Per configurare correttamente il client DDNS, è necessario un file .env contenente le credenziali e il sottodominio associati al tuo account DuckDns.
 
 📄 Esempio: ./duckdns-updater/.env
@@ -507,8 +402,8 @@ Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi
 - **Dalla barra di menu selezionate **Hosts** → **Proxy Hosts** → **Add New Proxy**
 - **Domain Names:** inserisci l’hostname corrispondente (es. `mammamia.stremio-<tuo id>.duckdns.org`)
 - **Scheme:** `http`
-- **Forward Hostname / IP:** il mome del servizio cosi come configurato nel docker-compose ovvero mammmia, mediaflow_proxy e streamv
-- **Forward Port:** la porta interna dove l’app è in ascolto (es. `8080` per Mammamia, `8888` per mediaflow_proxy, `7860` per streamv e `3000` per aiostreams)
+- **Forward Hostname / IP:** il mome del servizio cosi come configurato nel docker-compose ovvero mfp e easyproxy
+- **Forward Port:** la porta interna dove l’app è in ascolto (`8888` per mediaflow_proxy, `7860` per easyproxy
 - Abilita le seguenti opzioni:
   - **Block Common Exploits**
   - **Websockets Support** (se necessario)
