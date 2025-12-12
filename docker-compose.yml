@@ -15,14 +15,6 @@ services:
     restart: unless-stopped
     networks:
       - proxy
-  mammamia:
-    build: ./mammamia
-    container_name: mammamia
-    env_file:
-      - ./mammamia/.env
-    restart: unless-stopped 
-    networks:
-      - proxy
 
 volumes:
   npm-data:
