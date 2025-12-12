@@ -4,8 +4,6 @@ services:
   easyproxy:
     build: https://github.com/nzo66/EasyProxy.git
     container_name: easyproxy
-    env_file:
-      - ./easyproxy/.env
     restart: unless-stopped
     networks:
       - proxy
